@@ -10,7 +10,7 @@ tags:
 - GitHub
 ---
 
-[Hexo](https://hexo.io/zh-cn/)是一个**快速**、**简洁**且**高效**的博客框架，支持**MarkDown**。本篇博客将会教会搭建博客并将其部署在**GitHub**上.
+[Hexo](https://hexo.io/zh-cn/)是一个快速、简洁且高效的博客框架，支持MarkDown。本篇博客将会教会搭建博客并将其部署在GitHub上。
 
 <!--more-->
 
