@@ -8,6 +8,7 @@ tags:
 - Hexo
 - Git
 - GitHub
+- 博客
 ---
 
 [Hexo](https://hexo.io/zh-cn/)是一个快速、简洁且高效的博客框架，支持MarkDown。本篇博客将会教会搭建博客并将其部署在GitHub上。
