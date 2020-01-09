@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="使用腾讯云COS作为博客图床"><meta name="keywords" content="博客,腾讯云COS,图床,PicGo"><meta name="author" content="linrealp"><meta name="copyright" content="linrealp"><title>使用腾讯云COS作为博客图床 | linrealp's Blog</title><link rel="shortcut icon" href="https://linrealp-1258865037.cos.ap-chengdu.myqcloud.com/linrealpLogo.ico"><link rel="stylesheet" href="/css/index.css?version=1.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.6.1"><link rel="dns-prefetch" href="https://cdn.staticfile.org"><link rel="dns-prefetch" href="https://cdn.bootcss.com"><link rel="dns-prefetch" href="https://creativecommons.org"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  }
+} </script><meta name="generator" content="Hexo 4.2.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar"><div class="toggle-sidebar-info text-center"><span data-toggle="切换文章详情">切换站点概览</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前置条件"><span class="toc-number">2.</span> <span class="toc-text">前置条件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#具体实现"><span class="toc-number">3.</span> <span class="toc-text">具体实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#注册腾讯云账号"><span class="toc-number">3.1.</span> <span class="toc-text">注册腾讯云账号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开通腾讯云COS"><span class="toc-number">3.2.</span> <span class="toc-text">开通腾讯云COS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建存储桶"><span class="toc-number">3.3.</span> <span class="toc-text">创建存储桶</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#防盗链配置"><span class="toc-number">3.4.</span> <span class="toc-text">防盗链配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图片使用"><span class="toc-number">3.5.</span> <span class="toc-text">图片使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#工具推荐"><span class="toc-number">4.</span> <span class="toc-text">工具推荐</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用情况"><span class="toc-number">5.</span> <span class="toc-text">使用情况</span></a></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://linrealp-1258865037.cos.ap-chengdu.myqcloud.com/linrealpLogo.png"></div><div class="author-info__name text-center">linrealp</div><div class="author-info__description text-center"></div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">文章</span><span class="pull-right">3</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">标签</span><span class="pull-right">7</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">分类</span><span class="pull-right">2</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">linrealp's Blog</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus"><a class="site-page" href="/">首页</a><a class="site-page" href="/archives">归档</a><a class="site-page" href="/categories">分类</a><a class="site-page" href="/tags">标签</a></span></div><div id="post-info"><div id="post-title">使用腾讯云COS作为博客图床</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2020-01-09</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>写博客肯定需要用到图片，故一个图床是很必要的，目前有很多的图床可以使用，这里就不谈各个图床的优缺点了。通过再三挑选，我选用了腾讯云COS作为我的图床。</p>
+<a id="more"></a>
+
+<p>腾讯云COS并不是免费的，费用计算也比较复杂，详细可以去官网查看<a href="https://cloud.tencent.com/document/product/436/6222" target="_blank" rel="noopener">腾讯云COS文档</a>。腾讯云COS对新用户提供6个月免费的50G存储空间（只是存储空间，流量等其他需要付费）。我这里谈谈我的简单总结（目前我还没有用太久，在之后会补充实际<a href="#fact">使用情况</a>）。</p>
+<ol>
+<li>费用：我将腾讯云COS只用于博客的话，费用很便宜，计算下来一个月1元左右（各种费用）。</li>
+<li>速度：只用了图片，没有延迟。</li>
+<li>文档：相关文档详细。</li>
+<li>备案：不需要。</li>
+</ol>
+<h1 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h1><ul>
+<li><strong>无</strong></li>
+</ul>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><h2 id="注册腾讯云账号"><a href="#注册腾讯云账号" class="headerlink" title="注册腾讯云账号"></a>注册腾讯云账号</h2><p>腾讯云COS只是腾讯云其中的一个功能，注册是一个很常规的功能，这里就贴一个地址<a href="https://cloud.tencent.com/" target="_blank" rel="noopener">腾讯云</a>。腾讯云支持多个渠道：微信、QQ、邮箱、微信公众号。</p>
+<h2 id="开通腾讯云COS"><a href="#开通腾讯云COS" class="headerlink" title="开通腾讯云COS"></a>开通腾讯云COS</h2><p>在<strong>产品-&gt;基础-&gt;对象存储</strong>开通腾讯云COS</p>
+<blockquote>
+<p>这里的对象存储也就是腾讯COS</p>
+</blockquote>
+<p><img src="https://blog-1258865037.cos.ap-chengdu.myqcloud.com/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/20200109180757.png" alt="腾讯云COS"></p>
+<h2 id="创建存储桶"><a href="#创建存储桶" class="headerlink" title="创建存储桶"></a>创建存储桶</h2><p>进入对象存储，创建存储桶</p>
+<blockquote>
+<p>存储桶：是对象的载体，可理解为存放对象的“容器”。存储桶创建上限位200个，而且名字不能相同。存储桶内也能创建文件夹。</p>
+</blockquote>
+<p><img src="https://blog-1258865037.cos.ap-chengdu.myqcloud.com/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/20200109181808.png" alt="创建存储桶"></p>
+<ol>
+<li>名称：&lt;存储桶的名字&gt;，我这里是<code>test</code>，后面的一串编号是系统生成的<strong>唯一编号</strong></li>
+<li>所属地域：不同地域价格不同，离你越近的速度也越快，最好选择自己所在地区</li>
+<li>访问权限：由于我们是用于写博客，需要其他人能够查看，故选择<strong>共有读私有写</strong></li>
+</ol>
+<h2 id="防盗链配置"><a href="#防盗链配置" class="headerlink" title="防盗链配置"></a>防盗链配置</h2><p>别人访问你博客时是需要消耗流量的，而这部分流量是需要付费的。如果别人调用了你图片的链接用于他的博客，当其他人访问他的博客，图片收的流量费是属于你的，你需要额外支出他的博客使用图片的流量，他这就是<strong>盗链</strong>。</p>
+<p>为了防止这种情况，就需要设置防盗链，防止其他人进行盗链。</p>
+<p>在<strong>基础配置-&gt;防盗链设置</strong>中，可以设置防盗链，详细文档：<a href="https://cloud.tencent.com/document/product/436/13319" target="_blank" rel="noopener">防盗链设置</a></p>
+<p>不过对于一个博客来说，配置是很简单的，例如我的博客设置：</p>
+<p><img src="https://blog-1258865037.cos.ap-chengdu.myqcloud.com/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/20200109191349.png" alt="防盗链设置"></p>
+<p>上图设置的意思：只允许<code>linrealp.github.io</code>的域名访问，也就是其他域名调用不了我的图片。</p>
+<p><strong>注：使用防盗链后，在本地写博客也不能访问图床上的文件。</strong></p>
+<h2 id="图片使用"><a href="#图片使用" class="headerlink" title="图片使用"></a>图片使用</h2><ol>
+<li><p>上传一个图片（我这里没有创建文件夹）</p>
+<p><img src="https://blog-1258865037.cos.ap-chengdu.myqcloud.com/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/20200109185748.png" alt="上传文件"></p>
+</li>
+<li><p>使用图片</p>
+<p>点击图片的<strong>详情</strong></p>
+<p><img src="https://blog-1258865037.cos.ap-chengdu.myqcloud.com/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/20200109192029.png" alt="图片详情"></p>
+<p>当我们需要调用图片时，使用上面的<strong>对象地址</strong>的链接即可。</p>
+<p><strong>注：博客使用的都应该时标准存储，比较访问的次数比较多，详细比对参照<a href="https://cloud.tencent.com/document/product/436/33417" target="_blank" rel="noopener">存储类型</a></strong></p>
+</li>
+</ol>
+<h1 id="工具推荐"><a href="#工具推荐" class="headerlink" title="工具推荐"></a>工具推荐</h1><p>这里推荐<strong>PicGo</strong>作为图片上传工具，会简化很多步骤，是的上传图片很方便。文档有中文且写的很详细，这就不赘述了。<a href="">PicGo文档</a></p>
+<h1 id="使用情况"><a href="#使用情况" class="headerlink" title="使用情况"></a><span id="fact">使用情况</span></h1><p><strong>待更新……</strong></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">linrealp</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://linrealp.github.io/2020/01/09/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/">http://linrealp.github.io/2020/01/09/%E4%BD%BF%E7%94%A8%E8%85%BE%E8%AE%AF%E4%BA%91COS%E4%BD%9C%E4%B8%BA%E5%8D%9A%E5%AE%A2%E5%9B%BE%E5%BA%8A/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://linrealp.github.io">linrealp's Blog</a>！</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E8%85%BE%E8%AE%AF%E4%BA%91COS/">腾讯云COS</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BA%8A/">图床</a><a class="post-meta__tags" href="/tags/PicGo/">PicGo</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2020/01/07/Hexo%E2%80%94%E2%80%94%E5%9F%BA%E4%BA%8EGitHub%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%A4%87%E4%BB%BD/"><span>Hexo——基于GitHub的博客备份</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2020 By linrealp</div><div class="framework-info"><span>驱动 - </span><a href="http://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 - </span><a href="https://github.com/Molunerfinn/hexo-theme-melody" target="_blank" rel="noopener"><span>Melody</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.6.1"></script><script src="/js/fancybox.js?version=1.6.1"></script><script src="/js/sidebar.js?version=1.6.1"></script><script src="/js/copy.js?version=1.6.1"></script><script src="/js/fireworks.js?version=1.6.1"></script><script src="/js/transition.js?version=1.6.1"></script><script src="/js/scroll.js?version=1.6.1"></script><script src="/js/head.js?version=1.6.1"></script><script>if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+}</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"superSample":2,"width":210,"height":420,"position":"right","hOffset":0,"vOffset":-20},"log":false,"tagMode":false});</script></body></html>
