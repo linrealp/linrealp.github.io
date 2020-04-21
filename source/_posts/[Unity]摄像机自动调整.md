@@ -1,5 +1,5 @@
 ---
-title: [Unity]摄像机自动调节视角跟随
+title: [Unity]摄像机自动调整
 date: 2020-04-21
 categories:
 - 游戏开发
