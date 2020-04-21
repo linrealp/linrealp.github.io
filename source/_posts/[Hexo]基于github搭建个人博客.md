@@ -1,5 +1,5 @@
 ---
-title: Hexo——基于GitHub搭建个人博客
+title: [Hexo]基于GitHub搭建个人博客
 date: 2020-01-06
 categories:
 - 环境搭建
