@@ -1,5 +1,5 @@
 ---
-title: [Hexo]基于GitHub的博客备份
+title: Hexo——基于GitHub的博客备份
 date: 2020-01-07
 categories:
 - 环境搭建
